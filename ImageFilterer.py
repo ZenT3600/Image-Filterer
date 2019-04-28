@@ -18,11 +18,7 @@ def on_button(action):
         log.close()
         log = open("log.txt", "a+")
     progressbar.place(x=300, y=215, anchor="center")
-    txt.config(state=DISABLED)
-    btn_copy.config(state=DISABLED)
-    btn_gray.config(state=DISABLED)
-    btn_sepia.config(state=DISABLED)
-    quitter.config(state=DISABLED)
+    disable()
     image = txt.get() + variable.get()
     #print(image)
     #image = input("Image Name: ")
@@ -42,11 +38,7 @@ def on_button(action):
         now = datetime.now()
         messagebox.showerror("Error", "It seems like the image name you put in the field doesn't exist. Try writing it again or make sure that the image is in the same path as this program")
         progressbar.place_forget()
-        btn_copy.config(state=NORMAL)
-        btn_gray.config(state=NORMAL)
-        btn_sepia.config(state=NORMAL)
-        quitter.config(state=NORMAL)
-        txt.config(state=NORMAL)
+        enable()
         log.write(str(now))
         log.write(": Error Finding File \n")
         log.close()
@@ -102,6 +94,8 @@ def on_button(action):
         img = grayscale(nPixel, size, rArr, gArr, bArr)
     elif (action == "sepia"):
         img = sepia(nPixel, size, rArr, gArr, bArr)
+    elif (action == "negative"):
+        img = negative(nPixel, size, rArr, gArr, bArr)
     now = datetime.now()
     log.write(str(now))
     log.write(": Filter Added \n")
@@ -114,11 +108,7 @@ def on_button(action):
     log.write(": Process Completed \n")
     messagebox.showinfo("OK!", "Process completed, the file was saved")
     progressbar.place_forget()
-    btn_copy.config(state=NORMAL)
-    btn_gray.config(state=NORMAL)
-    btn_sepia.config(state=NORMAL)
-    quitter.config(state=NORMAL)
-    txt.config(state=NORMAL)
+    enable()
     log.close()
     
 def copy(nPixel, size, rArr, gArr, bArr):
@@ -191,6 +181,29 @@ def sepia(nPixel, size, rArr, gArr, bArr):
         progressbar["value"] = (maxValue - (maxValue - i3))
         progressbar.update()
     return(img)
+
+def negative(nPixel, size, rArr, gArr, bArr):
+    maxValue = nPixel
+    i3 = 0
+    img = PIL.Image.new( 'RGB', (size[0],size[1]), "black")
+    pixels = img.load()
+    print("Adding Filters")
+    for i1 in range (0, size[1]):
+        index = 0
+        for i2 in range (0, size[0]):
+            r = rArr[i3]
+            g = gArr[i3]
+            b = bArr[i3]
+            rn = 255 - r
+            gn = 255 - g
+            bn = 255 - b
+            pixels[i2, i1] = (rn, gn, bn)
+            i3 = i3 + 1
+        currentValue = nPixel
+        progressbar["value"] = (maxValue - (maxValue - i3))
+        progressbar.update()
+    return(img)
+
 #Funzioni Di Crediti E Aiuti
 def cred_start(sender):
     credits()
@@ -199,7 +212,7 @@ def credits():
     messagebox.showinfo("About", "Credits: \n Matteo Leggio \n matteo.leggio@tiscali.it")
     
 def help():
-    messagebox.showinfo("Help", "Insert the name of the image you want to add a filter to (it must be in the same directory as this program) in the 'image name' entry, then click the 'OK' button and watch hte program do it's work")
+    messagebox.showinfo("Help", "Insert the name of the image you want to add a filter to (it must be in the same directory as this program) in the 'image name' entry, then click the 'OK' button and watch the program do it's work")
     
 def github():
     messagebox.showinfo("GitHub", "Github Repository: \n <ADD REPOSITORY>")
@@ -232,6 +245,22 @@ def func_start(x):
 def bind_func_start(sender, x):
     action = x
     on_button(action)
+    
+def enable():
+    btn_copy.config(state=NORMAL)
+    btn_gray.config(state=NORMAL)
+    btn_sepia.config(state=NORMAL)
+    btn_nega.config(state=NORMAL)
+    quitter.config(state=NORMAL)
+    txt.config(state=NORMAL)
+
+def disable():
+    btn_copy.config(state=DISABLED)
+    btn_gray.config(state=DISABLED)
+    btn_sepia.config(state=DISABLED)
+    btn_nega.config(state=DISABLED)
+    quitter.config(state=DISABLED)
+    txt.config(state=DISABLED)
     
 win = Tk()
 log = open("log.txt", "a+")
@@ -271,6 +300,9 @@ btn_gray.bind('<Return>', lambda: bind_func_start("grayscale"))
 btn_sepia = Button(win, text="Sepia", command=lambda: func_start("sepia"))
 btn_sepia.place(x=300, y=340, anchor="center")
 btn_sepia.bind('<Return>', lambda: bind_func_start("sepia"))
+btn_nega = Button(win, text="Negative", command=lambda: func_start("negative"))
+btn_nega.place(x=300, y=380, anchor="center")
+btn_nega.bind('<Return>', lambda: bind_func_start("negative"))
 
 menubar = Menu(win)
 helpmenu = Menu(menubar, tearoff=0)
@@ -281,6 +313,6 @@ menubar.add_cascade(label="Help & Links", menu=helpmenu)
 win.config(menu=menubar)
 
 quitter = Button(win, width=6, text = "Quit", command=f_quitter)
-quitter.place(x=300, y=380, anchor="center")
+quitter.place(x=560, y=380, anchor="center")
 quitter.bind('<Return>', func_quitter)
 win.mainloop()
