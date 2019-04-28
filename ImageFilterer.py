@@ -1,6 +1,8 @@
 from openpyxl import *
 import PIL
 from PIL import Image
+from PIL import ImageEnhance
+import colorsys
 from webcolors import *
 from math import *
 from tkinter import *
@@ -96,6 +98,10 @@ def on_button(action):
         img = sepia(nPixel, size, rArr, gArr, bArr)
     elif (action == "negative"):
         img = negative(nPixel, size, rArr, gArr, bArr)
+    elif (action == "saturate"):
+        img = saturate(nPixel, size, rArr, gArr, bArr)
+    elif (action == "desaturate"):
+        img = desaturate(nPixel, size, rArr, gArr, bArr)
     now = datetime.now()
     log.write(str(now))
     log.write(": Filter Added \n")
@@ -204,6 +210,38 @@ def negative(nPixel, size, rArr, gArr, bArr):
         progressbar.update()
     return(img)
 
+def saturate(nPixel, size, rArr, gArr, bArr):
+    maxValue = nPixel
+    i3 = 0
+    img = copy(nPixel, size, rArr, gArr, bArr)
+    print("Adding Filters")
+    for i1 in range (0, size[1]):
+        index = 0
+        for i2 in range (0, size[0]):
+            i3 = i3 + 1
+        currentValue = nPixel
+        progressbar["value"] = (maxValue - (maxValue - i3))
+        progressbar.update()
+    converter = ImageEnhance.Color(img)
+    img = converter.enhance(2)
+    return(img)
+
+def desaturate(nPixel, size, rArr, gArr, bArr):
+    maxValue = nPixel
+    i3 = 0
+    img = copy(nPixel, size, rArr, gArr, bArr)
+    print("Adding Filters")
+    for i1 in range (0, size[1]):
+        index = 0
+        for i2 in range (0, size[0]):
+            i3 = i3 + 1
+        currentValue = nPixel
+        progressbar["value"] = (maxValue - (maxValue - i3))
+        progressbar.update()
+    converter = ImageEnhance.Color(img)
+    img = converter.enhance(0.5)
+    return(img)
+
 #Funzioni Di Crediti E Aiuti
 def cred_start(sender):
     credits()
@@ -251,6 +289,8 @@ def enable():
     btn_gray.config(state=NORMAL)
     btn_sepia.config(state=NORMAL)
     btn_nega.config(state=NORMAL)
+    btn_satu.config(state=NORMAL)
+    btn_desatu.config(state=NORMAL)
     quitter.config(state=NORMAL)
     txt.config(state=NORMAL)
 
@@ -259,6 +299,8 @@ def disable():
     btn_gray.config(state=DISABLED)
     btn_sepia.config(state=DISABLED)
     btn_nega.config(state=DISABLED)
+    btn_satu.config(state=DISABLED)
+    btn_desatu.config(state=DISABLED)
     quitter.config(state=DISABLED)
     txt.config(state=DISABLED)
     
@@ -303,6 +345,12 @@ btn_sepia.bind('<Return>', lambda: bind_func_start("sepia"))
 btn_nega = Button(win, text="Negative", command=lambda: func_start("negative"))
 btn_nega.place(x=300, y=380, anchor="center")
 btn_nega.bind('<Return>', lambda: bind_func_start("negative"))
+btn_satu = Button(win, text="Saturate", command=lambda: func_start("saturate"))
+btn_satu.place(x=220, y=260, anchor="center")
+btn_satu.bind('<Return>', lambda: bind_func_start("saturate"))
+btn_desatu = Button(win, text="Desaturate", command=lambda: func_start("desaturate"))
+btn_desatu.place(x=220, y=300, anchor="center")
+btn_desatu.bind('<Return>', lambda: bind_func_start("desaturate"))
 
 menubar = Menu(win)
 helpmenu = Menu(menubar, tearoff=0)
