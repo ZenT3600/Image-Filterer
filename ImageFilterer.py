@@ -215,7 +215,7 @@ def help():
     messagebox.showinfo("Help", "Insert the name of the image you want to add a filter to (it must be in the same directory as this program) in the 'image name' entry, then click the 'OK' button and watch the program do it's work")
     
 def github():
-    messagebox.showinfo("GitHub", "Github Repository: \n <ADD REPOSITORY>")
+    messagebox.showinfo("GitHub", "Github Repository: \n github.com/ZenT3600/Image-Filterer")
 #Fine Funzioni Di Crediti E Aiuti
     
     
