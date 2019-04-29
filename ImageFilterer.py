@@ -10,15 +10,12 @@ from tkinter import messagebox
 from tkinter.ttk import *
 from datetime import datetime
 def on_button(action):
-    now = datetime.now()
     try:
         fh = open("log.txt", "r")
-        log = open("log.txt", "a+")
     except:
         log = open("log.txt", "w+")
         log.write("Start Of The Log History:")
         log.close()
-        log = open("log.txt", "a+")
     progressbar.place(x=300, y=215, anchor="center")
     disable()
     image = txt.get() + variable.get()
@@ -27,23 +24,15 @@ def on_button(action):
     #print(image)
     print("")
     try:
-        now = datetime.now()
         im = PIL.Image.open(image)
         rgb_im = im.convert('RGB')
-        log.write(str(now))
-        log.write(": File Name: ")
-        log.write(image)
-        log.write("\n")
-        log.write(str(now))
-        log.write(": File Found Succesfully \n")
+        logValue(": File Name: ", image)
+        logAction(": Image Opened Successfully \n")
     except:
-        now = datetime.now()
         messagebox.showerror("Error", "It seems like the image name you put in the field doesn't exist. Try writing it again or make sure that the image is in the same path as this program")
         progressbar.place_forget()
         enable()
-        log.write(str(now))
-        log.write(": Error Finding File \n")
-        log.close()
+        logAction(": Error Finding File \n")
     size = im.size
     print("Width:", size[0])
     print("Height:", size[1])
@@ -68,9 +57,7 @@ def on_button(action):
             x = x + 1
         x = 0
         y = y + 1
-    now = datetime.now()
-    log.write(str(now))
-    log.write(": Image's pixel color analized succesfully \n")
+    logAction(": Image's pixel color analyzed successfully \n")
     print("")
     print("The image contains", nPixel, "pixels")
     print("")
@@ -86,10 +73,7 @@ def on_button(action):
                 #alfabeto.append(alfabeto[l] + alfabeto[i])
             #l = l + 1
         #print(alfabeto)
-    log.write(str(now))
-    log.write(": Filter Name: ")
-    log.write(action)
-    log.write("\n")
+    logValue(": Filter Name: ", action)
     if (action == "copy"):
         img = copy(nPixel, size, rArr, gArr, bArr)
     elif (action == "grayscale"):
@@ -102,20 +86,15 @@ def on_button(action):
         img = saturate(nPixel, size, rArr, gArr, bArr)
     elif (action == "desaturate"):
         img = desaturate(nPixel, size, rArr, gArr, bArr)
-    now = datetime.now()
-    log.write(str(now))
-    log.write(": Filter Added \n")
+    logAction(": Filter Added Successfully \n")
     print("")
     print("Process Completed!")
     print("")
     img.save(action + "-" + str(image))
-    now = datetime.now()
-    log.write(str(now))
-    log.write(": Process Completed \n")
+    logAction(": Process Completed \n")
     messagebox.showinfo("OK!", "Process completed, the file was saved")
     progressbar.place_forget()
     enable()
-    log.close()
     
 def copy(nPixel, size, rArr, gArr, bArr):
     maxValue = nPixel
@@ -242,7 +221,6 @@ def desaturate(nPixel, size, rArr, gArr, bArr):
     img = converter.enhance(0.5)
     return(img)
 
-#Funzioni Di Crediti E Aiuti
 def cred_start(sender):
     credits()
 
@@ -254,15 +232,11 @@ def help():
     
 def github():
     messagebox.showinfo("GitHub", "Github Repository: \n github.com/ZenT3600/Image-Filterer")
-#Fine Funzioni Di Crediti E Aiuti
     
     
 def f_quitter():
     log = open("log.txt", "a+")
-    now = datetime.now()
-    log.write(str(now))
-    log.write(": Quit The Program \n")
-    log.close()
+    logAction(": Quit The Program: \n")
     win.destroy()
 
 def func_quitter(sender):
@@ -270,10 +244,7 @@ def func_quitter(sender):
     
 def on_closing():
     log = open("log.txt", "a+")
-    now = datetime.now()
-    log.write(str(now))
-    log.write(": Program Closed Prematurely \n")
-    log.close()
+    logAction(": Program Closed Prematurely: \n")
     win.destroy()
 
 def func_start(x):
@@ -303,6 +274,22 @@ def disable():
     btn_desatu.config(state=DISABLED)
     quitter.config(state=DISABLED)
     txt.config(state=DISABLED)
+    
+def logAction(action):
+    now = datetime.now()
+    log = open("log.txt", "a+")
+    log.write(str(now))
+    log.write(action)
+    log.close()
+    
+def logValue(action, value):
+    now = datetime.now()
+    log = open("log.txt", "a+")
+    log.write(str(now))
+    log.write(action)
+    log.write(value)
+    log.write("\n")
+    log.close()
     
 win = Tk()
 log = open("log.txt", "a+")
