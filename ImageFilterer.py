@@ -86,6 +86,10 @@ def on_button(action):
         img = saturate(nPixel, size, rArr, gArr, bArr)
     elif (action == "desaturate"):
         img = desaturate(nPixel, size, rArr, gArr, bArr)
+    elif (action == "lighten"):
+        img = lighten(nPixel, size, rArr, gArr, bArr)
+    elif (action == "darken"):
+        img = darken(nPixel, size, rArr, gArr, bArr)
     logAction(": Filter Added Successfully \n")
     print("")
     print("Process Completed!")
@@ -221,6 +225,38 @@ def desaturate(nPixel, size, rArr, gArr, bArr):
     img = converter.enhance(0.5)
     return(img)
 
+def lighten(nPixel, size, rArr, gArr, bArr):
+    maxValue = nPixel
+    i3 = 0
+    img = copy(nPixel, size, rArr, gArr, bArr)
+    print("Adding Filters")
+    for i1 in range (0, size[1]):
+        index = 0
+        for i2 in range (0, size[0]):
+            i3 = i3 + 1
+        currentValue = nPixel
+        progressbar["value"] = (maxValue - (maxValue - i3))
+        progressbar.update()
+    light = PIL.Image.new( 'RGB', (size[0],size[1]), "white")
+    img = PIL.Image.blend(img, light, 0.5)
+    return(img)
+
+def darken(nPixel, size, rArr, gArr, bArr):
+    maxValue = nPixel
+    i3 = 0
+    img = copy(nPixel, size, rArr, gArr, bArr)
+    print("Adding Filters")
+    for i1 in range (0, size[1]):
+        index = 0
+        for i2 in range (0, size[0]):
+            i3 = i3 + 1
+        currentValue = nPixel
+        progressbar["value"] = (maxValue - (maxValue - i3))
+        progressbar.update()
+    dark = PIL.Image.new( 'RGB', (size[0],size[1]), "black")
+    img = PIL.Image.blend(img, dark, 0.5)
+    return(img)
+
 def cred_start(sender):
     credits()
 
@@ -235,7 +271,6 @@ def github():
     
     
 def f_quitter():
-    log = open("log.txt", "a+")
     logAction(": Quit The Program: \n")
     win.destroy()
 
@@ -243,7 +278,6 @@ def func_quitter(sender):
     f_quitter()
     
 def on_closing():
-    log = open("log.txt", "a+")
     logAction(": Program Closed Prematurely: \n")
     win.destroy()
 
@@ -262,6 +296,8 @@ def enable():
     btn_nega.config(state=NORMAL)
     btn_satu.config(state=NORMAL)
     btn_desatu.config(state=NORMAL)
+    btn_light.config(state=NORMAL)
+    btn_dark.config(state=NORMAL)
     quitter.config(state=NORMAL)
     txt.config(state=NORMAL)
 
@@ -272,6 +308,8 @@ def disable():
     btn_nega.config(state=DISABLED)
     btn_satu.config(state=DISABLED)
     btn_desatu.config(state=DISABLED)
+    btn_light.config(state=DISABLED)
+    btn_dark.config(state=DISABLED)
     quitter.config(state=DISABLED)
     txt.config(state=DISABLED)
     
@@ -338,6 +376,13 @@ btn_satu.place(x=220, y=260, anchor="center")
 btn_desatu = Button(win, text="Desaturate", command=lambda: func_start("desaturate"))
 btn_desatu.place(x=220, y=300, anchor="center")
 #btn_desatu.bind('<Return>', lambda: bind_func_start("desaturate"))
+btn_light = Button(win, text="Lighten", command=lambda: func_start("lighten"))
+btn_light.place(x=140, y=260, anchor="center")
+#
+btn_dark = Button(win, text="Darken", command=lambda: func_start("darken"))
+btn_dark.place(x=460, y=260, anchor="center")
+#
+
 
 menubar = Menu(win)
 helpmenu = Menu(menubar, tearoff=0)
