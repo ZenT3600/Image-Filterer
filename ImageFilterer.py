@@ -280,9 +280,9 @@ def func_start(x):
     action = x
     on_button(action)
     
-def bind_func_start(sender, x):
-    action = x
-    on_button(action)
+#def bind_func_start(sender, x):
+#    action = x
+#    on_button(action)
     
 def enable():
     btn_copy.config(state=NORMAL)
@@ -335,22 +335,22 @@ progressbar = Progressbar(win,orient="horizontal",length=300,mode="determinate")
 
 btn_copy = Button(win, text="Copy", command=lambda: func_start("copy"))
 btn_copy.place(x=300, y=260, anchor="center")
-btn_copy.bind('<Return>', lambda: bind_func_start("copy"))
+#btn_copy.bind('<Return>', lambda: bind_func_start("copy"))
 btn_gray = Button(win, text="Grayscale", command=lambda: func_start("grayscale"))
 btn_gray.place(x=300, y=300, anchor="center")
-btn_gray.bind('<Return>', lambda: bind_func_start("grayscale"))
+#btn_gray.bind('<Return>', lambda: bind_func_start("grayscale"))
 btn_sepia = Button(win, text="Sepia", command=lambda: func_start("sepia"))
-btn_sepia.place(x=300, y=340, anchor="center")
-btn_sepia.bind('<Return>', lambda: bind_func_start("sepia"))
+btn_sepia.place(x=380, y=260, anchor="center")
+#btn_sepia.bind('<Return>', lambda: bind_func_start("sepia"))
 btn_nega = Button(win, text="Negative", command=lambda: func_start("negative"))
-btn_nega.place(x=300, y=380, anchor="center")
-btn_nega.bind('<Return>', lambda: bind_func_start("negative"))
+btn_nega.place(x=380, y=300, anchor="center")
+#btn_nega.bind('<Return>', lambda: bind_func_start("negative"))
 btn_satu = Button(win, text="Saturate", command=lambda: func_start("saturate"))
 btn_satu.place(x=220, y=260, anchor="center")
-btn_satu.bind('<Return>', lambda: bind_func_start("saturate"))
+#btn_satu.bind('<Return>', lambda: bind_func_start("saturate"))
 btn_desatu = Button(win, text="Desaturate", command=lambda: func_start("desaturate"))
 btn_desatu.place(x=220, y=300, anchor="center")
-btn_desatu.bind('<Return>', lambda: bind_func_start("desaturate"))
+#btn_desatu.bind('<Return>', lambda: bind_func_start("desaturate"))
 
 menubar = Menu(win)
 helpmenu = Menu(menubar, tearoff=0)
